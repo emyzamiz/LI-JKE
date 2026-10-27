@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard LI JKE POLISAS — Sesi I 2026/2027</title>
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --primary:   #003087;
+      --accent:    #0057B8;
+      --accent2:   #1a73e8;
+      --bg:        #F4F6F9;
+      --surface:   #ffffff;
+      --text:      #1A1A2E;
+      --muted:     #5f6b7a;
+      --border:    #dde3ea;
+      --green:     #16a34a;
+      --green-bg:  #dcfce7;
+      --yellow:    #b45309;
+      --yellow-bg: #fef3c7;
+      --red:       #dc2626;
+      --red-bg:    #fee2e2;
+      --grey:      #6b7280;
+      --grey-bg:   #f3f4f6;
+      --radius:    8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 0;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 24px 10px;
+    }
+    .header-logo {
+      width: 52px;
+      height: 52px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .header-info h1 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .header-info p {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 1px;
+    }
+    .header-meta {
+      margin-left: auto;
+      text-align: right;
+      font-size: 12px;
+      opacity: 0.85;
+    }
+    .header-meta strong { display: block; font-size: 13px; opacity: 1; }
+    .header-bar {
+      background: var(--accent);
+      padding: 7px 24px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-bar span { opacity: 0.9; }
+    #last-refresh { font-style: italic; }
+
+    /* ===== MAIN LAYOUT ===== */
+    main { padding: 20px 24px 40px; max-width: 1400px; margin: 0 auto; }
+
+    /* ===== SUMMARY CARDS ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+      border-left: 4px solid var(--accent);
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .card-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .card-sub {
+      margin-top: 10px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .card-sub span {
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .badge-green  { background: var(--green-bg);  color: var(--green); }
+    .badge-red    { background: var(--red-bg);    color: var(--red); }
+    .badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-grey   { background: var(--grey-bg);   color: var(--grey); }
+
+    .card-bar-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .card-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--green);
+      transition: width 0.4s ease;
+    }
+
+    /* ===== TAB NAV ===== */
+    .tab-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .tab-nav {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      background: #f8f9fb;
+    }
+    .tab-btn {
+      padding: 13px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--accent); }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: var(--surface);
+    }
+    .tab-panel { display: none; padding: 20px; }
+    .tab-panel.active { display: block; }
+
+    /* ===== PANEL HEADER ===== */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .panel-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* ===== TABLES ===== */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    thead th:first-child { border-radius: 0; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: #f9fafb; }
+    tbody tr:hover { background: #eef3fb; }
+    tbody td { padding: 9px 12px; vertical-align: middle; }
+    .td-num { color: var(--muted); font-size: 12px; width: 36px; }
+    .td-bold { font-weight: 600; }
+    .td-muted { color: var(--muted); font-size: 12px; }
+    .td-email a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .td-email a:hover { text-decoration: underline; }
+
+    /* ===== STATUS BADGES in TABLE ===== */
+    .st {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .st-ok     { background: var(--green-bg);  color: var(--green); }
+    .st-late   { background: var(--red-bg);    color: var(--red); }
+    .st-wait   { background: var(--grey-bg);   color: var(--grey); }
+    .st-partial{ background: var(--yellow-bg); color: var(--yellow); }
+
+    tr.row-alert td:first-child { border-left: 3px solid var(--red); }
+    tr.row-ok td:first-child { border-left: 3px solid var(--green); }
+
+    /* ===== REFRESH BUTTON ===== */
+    .btn-refresh {
+      padding: 7px 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-refresh:hover { background: var(--primary); }
+    .btn-refresh:disabled { background: var(--grey); cursor: default; }
+
+    /* ===== LOADING / ERROR ===== */
+    .loading-msg {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .loading-msg .spinner {
+      display: inline-block;
+      width: 22px; height: 22px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .config-notice {
+      background: var(--yellow-bg);
+      border: 1px solid #fcd34d;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--yellow);
+    }
+    .config-notice strong { display: block; margin-bottom: 4px; }
+
+    /* ===== FORM LINKS SECTION ===== */
+    .form-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+    @media (max-width: 768px) { .form-links { grid-template-columns: 1fr; } }
+    .form-link-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff;
+      text-align: center;
+    }
+    .form-link-card p { font-size: 12px; color: var(--muted); margin: 6px 0 10px; }
+    .form-link-card a {
+      display: inline-block;
+      padding: 7px 16px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .form-link-card a:hover { background: var(--primary); }
+    .form-link-card a.disabled-link {
+      background: var(--grey);
+      pointer-events: none;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-top">
+    <div class="header-logo">🎓</div>
+    <div class="header-info">
+      <h1>DASHBOARD LATIHAN INDUSTRI — JKE POLISAS</h1>
+      <p>Jabatan Kejuruteraan Elektrik | Politeknik Sultan Haji Ahmad Shah</p>
+    </div>
+    <div class="header-meta">
+      <strong id="hdr-date">—</strong>
+      <span>Pegawai LI: NOR HAMIZA BINTI GHAZALI</span>
+    </div>
+  </div>
+  <div class="header-bar">
+    <span>📅 Sesi I 2026/2027 &nbsp;|&nbsp; 15 Jun 2026 – 30 Oktober 2026 &nbsp;|&nbsp; Program: DEE (A) &nbsp;|&nbsp; <strong id="minggu-sekarang">—</strong></span>
+    <span id="last-refresh">—</span>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+  <!-- Config Notice (hidden once URLs are set) -->
+  <div class="config-notice" id="config-notice">
+    <strong>⚙️ Tindakan Diperlukan: Masukkan URL Google Sheets</strong>
+    Dashboard ini menggunakan data dari Google Sheets. Sila ikut panduan dalam fail
+    <code>GOOGLE_SHEETS_SETUP.md</code> untuk setup Google Sheets & Forms, kemudian masukkan
+    URL CSV di bahagian <code>CONFIG</code> dalam fail HTML ini. Data demo dipaparkan buat masa ini.
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="cards-grid" id="cards-grid">
+    <div class="card" id="card-pelajar">
+      <div class="card-title">📋 Pelajar LI — Dokumen</div>
+      <div class="card-number" id="c1-num">38</div>
+      <div class="card-bar-track"><div class="card-bar-fill" id="c1-bar" style="width:0%"></div></div>
+      <div class="card-sub" id="c1-sub"></div>
+    </div>
+    <div class="card" id="card-pensyarah">
+      <div class="card-title">🎓 Borang Penilaian — Pensyarah</div>
+      <div class="card-number" id="c2-num">—</div>
+      <div class="card-bar-track"><div class="card-bar-fill" id="c2-bar" style="width:0%"></div></div>
+      <div class="card-sub" id="c2-sub"></div>
+    </div>
+    <div class="card" id="card-penyelia">
+      <div class="card-title">🏭 Borang Penilaian — Penyelia Syarikat</div>
+      <div class="card-number" id="c3-num">—</div>
+      <div class="card-bar-track"><div class="card-bar-fill" id="c3-bar" style="width:0%"></div></div>
+      <div class="card-sub" id="c3-sub"></div>
+    </div>
+  </div>
+
+  <!-- TAB SECTION -->
+  <div class="tab-section">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('pelajar')">📋 Dokumen Pelajar</button>
+      <button class="tab-btn" onclick="switchTab('pensyarah')">🎓 Borang Pensyarah</button>
+      <button class="tab-btn" onclick="switchTab('penyelia')">🏭 Borang Penyelia</button>
+      <button class="btn-refresh" onclick="loadAllData()" id="btn-refresh" style="margin-left:auto;margin:8px 16px 8px auto;align-self:center">🔄 Muat Semula</button>
+    </div>
+
+    <!-- TAB 1: Dokumen Pelajar -->
+    <div class="tab-panel active" id="panel-pelajar">
+      <div class="panel-header">
+        <div class="panel-title">Checklist Dokumen LI — 38 Pelajar DEE (A)</div>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="filterPelajar('semua',this)">Semua</button>
+          <button class="filter-btn" onclick="filterPelajar('tertunggak',this)">⚠️ Ada Tertunggak</button>
+          <button class="filter-btn" onclick="filterPelajar('lengkap',this)">✅ Lengkap</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-pelajar">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>No Pend</th>
+              <th>Nama Pelajar</th>
+              <th>Akujanji<br/><small style="font-weight:400;opacity:.8">Mgu 1</small></th>
+              <th>Setuju Terima<br/><small style="font-weight:400;opacity:.8">Mgu 1</small></th>
+              <th>Kad Lapor<br/><small style="font-weight:400;opacity:.8">Mgu 1</small></th>
+              <th>Log Book 1<br/><small style="font-weight:400;opacity:.8">Mgu 4</small></th>
+              <th>Log Book 2<br/><small style="font-weight:400;opacity:.8">Mgu 8</small></th>
+              <th>Log Book 3<br/><small style="font-weight:400;opacity:.8">Mgu 12</small></th>
+              <th>Report Akhir<br/><small style="font-weight:400;opacity:.8">Mgu 16</small></th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-pelajar">
+            <tr><td colspan="11"><div class="loading-msg"><div class="spinner"></div><br/>Memuatkan data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 2: Borang Pensyarah -->
+    <div class="tab-panel" id="panel-pensyarah">
+      <div class="panel-header">
+        <div class="panel-title">Checklist Borang Penilaian — Pensyarah Penilai JKE</div>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="filterPensyarah('semua',this)">Semua</button>
+          <button class="filter-btn" onclick="filterPensyarah('belum',this)">⚠️ Belum Lengkap</button>
+          <button class="filter-btn" onclick="filterPensyarah('lengkap',this)">✅ Lengkap</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-pensyarah">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>Nama Pensyarah</th>
+              <th>Pelajar Dinilai</th>
+              <th>No Pend</th>
+              <th>Lawatan 1</th>
+              <th>Lawatan 2</th>
+              <th>Penilaian Akhir</th>
+              <th>Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-pensyarah">
+            <tr><td colspan="9"><div class="loading-msg"><div class="spinner"></div><br/>Memuatkan data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: Borang Penyelia -->
+    <div class="tab-panel" id="panel-penyelia">
+      <div class="panel-header">
+        <div class="panel-title">Checklist Borang Penilaian — Penyelia Syarikat</div>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="filterPenyelia('semua',this)">Semua</button>
+          <button class="filter-btn" onclick="filterPenyelia('belum',this)">⚠️ Belum Hantar</button>
+          <button class="filter-btn" onclick="filterPenyelia('hantar',this)">✅ Sudah Hantar</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-penyelia">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>Nama Pelajar</th>
+              <th>No Pend</th>
+              <th>Nama Penyelia</th>
+              <th>Syarikat</th>
+              <th>Penilaian Pertengahan</th>
+              <th>Penilaian Akhir</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-penyelia">
+            <tr><td colspan="8"><div class="loading-msg"><div class="spinner"></div><br/>Memuatkan data...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM LINKS -->
+  <div class="form-links">
+    <div class="form-link-card">
+      <strong>📋 Form Pelajar</strong>
+      <p>Untuk pelajar kemaskini status penghantaran dokumen LI</p>
+      <a href="#" id="link-form-pelajar" class="disabled-link">Buka Google Form →</a>
+    </div>
+    <div class="form-link-card">
+      <strong>🎓 Form Pensyarah</strong>
+      <p>Untuk pensyarah penilai tandakan borang penilaian dihantar</p>
+      <a href="#" id="link-form-pensyarah" class="disabled-link">Buka Google Form →</a>
+    </div>
+    <div class="form-link-card">
+      <strong>🏭 Form Penyelia</strong>
+      <p>Untuk penyelia syarikat tandakan borang penilaian dihantar</p>
+      <a href="#" id="link-form-penyelia" class="disabled-link">Buka Google Form →</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Dashboard LI JKE POLISAS &nbsp;|&nbsp; Jabatan Kejuruteraan Elektrik, POLISAS &nbsp;|&nbsp; Sesi I 2026/2027
+</footer>
+
+<script>
+// ============================================================
+// === KONFIGURASI URL GOOGLE SHEETS (GANTIKAN DENGAN URL SEBENAR)
+// ============================================================
+const CONFIG = {
+  CSV_PELAJAR:    'URL_CSV_SHEET_DOKUMEN_PELAJAR_DI_SINI',
+  CSV_PENSYARAH:  'URL_CSV_SHEET_BORANG_PENSYARAH_DI_SINI',
+  CSV_PENYELIA:   'URL_CSV_SHEET_BORANG_PENYELIA_DI_SINI',
+};
+
+// ============================================================
+// === LINK GOOGLE FORMS (GANTIKAN DENGAN LINK SEBENAR)
+// ============================================================
+const FORMS = {
+  FORM_PELAJAR:   '',  // contoh: 'https://forms.gle/XXXXX'
+  FORM_PENSYARAH: '',
+  FORM_PENYELIA:  '',
+};
+
+// ============================================================
+// === DATA PELAJAR SEBENAR (dari senarai JKE POLISAS)
+// ============================================================
+const SENARAI_PELAJAR = [
+  { bil:1,  noPend:'02DEE22F1068', nama:'MUHAMMAD ZAKWAN BIN MOHD PAUZI',          pensyarah:'EN. AHMAD FARID BIN MOHAMAD@JAFFAR',    email:'farid@polisas.edu.my' },
+  { bil:2,  noPend:'02DEE22F2008', nama:'MUHAMMAD SYAKIR BIN SAIFUZ ZAMAN',        pensyarah:'EN. AHMAD HAJRI BIN KASIM',              email:'hajri@polisas.edu.my' },
+  { bil:3,  noPend:'02DEE23F1052', nama:'MUHAMMADI AR RAHMAN BIN AHMAD',           pensyarah:'EN. AHMAD ZAIRI BIN MOHD ZAIN',          email:'zairizain@polisas.edu.my' },
+  { bil:4,  noPend:'02DEE23F1072', nama:'AHMAD NAJWAN NAFIZ BIN SAFNIZAM',         pensyarah:'EN. AMRUL AKIL BIN AHMAD@HASHIM',        email:'akil@polisas.edu.my' },
+  { bil:5,  noPend:'02DEE23F2001', nama:'MUHAMMAD HADIID BIN MD ZAWAWI',           pensyarah:'PN. ANIS SALWANI BINTI ABU BAKAR',       email:'anis@polisas.edu.my' },
+  { bil:6,  noPend:'02DEE23F2002', nama:'MUHAMMAD FATIHIN ADLI BIN MOHD FAZLI',   pensyarah:'PN. ASMUNI MUHAIRAH BT ABDULLAH',        email:'asmuni@polisas.edu.my' },
+  { bil:7,  noPend:'02DEE23F2003', nama:'JABRULLAH FARHAN NAJMI BIN JABRI',        pensyarah:'PN. AZIMAH BINTI JUSOH@ALIAS',           email:'azimahalias@polisas.edu.my' },
+  { bil:8,  noPend:'02DEE23F2004', nama:'MUHAMMAD FAKHRUL AMANI BIN MOHD ROMZI',  pensyarah:'PN. BAKISS HIYANA BT ABU BAKAR',         email:'bakiss@polisas.edu.my' },
+  { bil:9,  noPend:'02DEE23F2006', nama:'MOHAMAD FATIHI BIN MOHD AZAM',           pensyarah:'TS. FAUZIANNA BINTI AWANG',              email:'fauzianna@polisas.edu.my' },
+  { bil:10, noPend:'02DEE23F2008', nama:'MUHAMMAD AIMAN DANIEL BIN MOHD NURI',    pensyarah:'PN. HASLINA BINTI MAHMOOD',              email:'haslina@polisas.edu.my' },
+  { bil:11, noPend:'02DEE23F2009', nama:'MUHAMMAD NAUFAL ASWAD BIN MOHD HASFIFI', pensyarah:'EN. HASNUZI BIN HASIM',                  email:'hasnuzi@polisas.edu.my' },
+  { bil:12, noPend:'02DEE23F2010', nama:'MUHAMMAD HAFIZ BIN JAMALUDIN',            pensyarah:'PN. HAZILA BINTI ABDULLAH @ HASSIM',     email:'hazila@polisas.edu.my' },
+  { bil:13, noPend:'02DEE23F2011', nama:'MUHAMMAD HARITH DANIAL BIN MOHD ASNAZAM',pensyarah:'EN. JAMIL BIN SHARIPUDDIN',              email:'jamil@polisas.edu.my' },
+  { bil:14, noPend:'02DEE23F2015', nama:'FIRDAUS ASYRAF BIN ROHIMI',               pensyarah:'NOR HAMIZA BINTI GHAZALI',               email:'hamiza@polisas.edu.my' },
+  // ── Bil 15–38: tambah data pelajar lain di sini ──
+  { bil:15, noPend:'02DEE23F2016', nama:'[NAMA PELAJAR 15]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:16, noPend:'02DEE23F2017', nama:'[NAMA PELAJAR 16]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:17, noPend:'02DEE23F2018', nama:'[NAMA PELAJAR 17]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:18, noPend:'02DEE23F2019', nama:'[NAMA PELAJAR 18]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:19, noPend:'02DEE23F2020', nama:'[NAMA PELAJAR 19]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:20, noPend:'02DEE23F2021', nama:'[NAMA PELAJAR 20]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:21, noPend:'02DEE23F2022', nama:'[NAMA PELAJAR 21]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:22, noPend:'02DEE23F2023', nama:'[NAMA PELAJAR 22]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:23, noPend:'02DEE23F2024', nama:'[NAMA PELAJAR 23]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:24, noPend:'02DEE23F2025', nama:'[NAMA PELAJAR 24]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:25, noPend:'02DEE23F2026', nama:'[NAMA PELAJAR 25]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:26, noPend:'02DEE23F2027', nama:'[NAMA PELAJAR 26]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:27, noPend:'02DEE23F2028', nama:'[NAMA PELAJAR 27]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:28, noPend:'02DEE23F2029', nama:'[NAMA PELAJAR 28]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:29, noPend:'02DEE23F2030', nama:'[NAMA PELAJAR 29]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:30, noPend:'02DEE23F2031', nama:'[NAMA PELAJAR 30]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:31, noPend:'02DEE23F2032', nama:'[NAMA PELAJAR 31]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:32, noPend:'02DEE23F2033', nama:'[NAMA PELAJAR 32]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:33, noPend:'02DEE23F2034', nama:'[NAMA PELAJAR 33]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:34, noPend:'02DEE23F2035', nama:'[NAMA PELAJAR 34]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:35, noPend:'02DEE23F2036', nama:'[NAMA PELAJAR 35]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:36, noPend:'02DEE23F2037', nama:'[NAMA PELAJAR 36]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:37, noPend:'02DEE23F2038', nama:'[NAMA PELAJAR 37]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+  { bil:38, noPend:'02DEE23F2039', nama:'[NAMA PELAJAR 38]',  pensyarah:'[NAMA PENSYARAH]', email:'' },
+];
+
+// ============================================================
+// === KONFIGURASI DOKUMEN & MINGGU HANTAR
+// ============================================================
+const DOCS = [
+  { key:'akujanji',  label:'Borang Akujanji',           minggu:1  },
+  { key:'setuju',    label:'Surat Setuju Terima',        minggu:1  },
+  { key:'kad',       label:'Kad Lapor Diri',             minggu:1  },
+  { key:'logbook1',  label:'Log Book (Minggu 4)',        minggu:4  },
+  { key:'logbook2',  label:'Log Book (Minggu 8)',        minggu:8  },
+  { key:'logbook3',  label:'Log Book (Minggu 12)',       minggu:12 },
+  { key:'report',    label:'Report Akhir',               minggu:16 },
+];
+
+const BORANG_PENSYARAH = ['Borang Lawatan 1','Borang Lawatan 2','Borang Penilaian Akhir'];
+const BORANG_PENYELIA  = ['Penilaian Pertengahan','Penilaian Akhir'];
+
+const TARIKH_MULA_LI = new Date('2026-06-15');
+const USE_DEMO       = (CONFIG.CSV_PELAJAR.includes('URL_CSV'));
+
+// ============================================================
+// === GLOBAL STATE
+// ============================================================
+let gPelajarRows    = [];
+let gPensyarahRows  = [];
+let gPenyeliaRows   = [];
+let gFilterPelajar  = 'semua';
+let gFilterPensyarah= 'semua';
+let gFilterPenyelia = 'semua';
+
+// ============================================================
+// === UTILITI
+// ============================================================
+function mingguSekarang() {
+  const today = new Date();
+  const diff  = today - TARIKH_MULA_LI;
+  const minggu = Math.ceil(diff / (7 * 24 * 60 * 60 * 1000));
+  return Math.max(0, Math.min(minggu, 20));
+}
+
+function formatTarikh(d) {
+  return d.toLocaleDateString('ms-MY', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    const vals = [];
+    let cur = '', inQ = false;
+    for (let c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    vals.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, ''); });
+    return obj;
+  });
+}
+
+// ============================================================
+// === DEMO DATA (bila CSV belum dikonfigurasi)
+// ============================================================
+function genDemoData() {
+  const mgu = mingguSekarang();
+  const demoP = [];
+  SENARAI_PELAJAR.forEach(p => {
+    DOCS.forEach(d => {
+      if (d.minggu <= mgu) {
+        const hantar = Math.random() > 0.25;
+        if (hantar) demoP.push({
+          'No Pend': p.noPend,
+          'Nama Pelajar': p.nama,
+          'Jenis Dokumen': d.label,
+          'Status': 'Sudah Dihantar',
+          'Minggu Hantar': String(d.minggu),
+        });
+      }
+    });
+  });
+
+  const demoLec = [];
+  SENARAI_PELAJAR.forEach(p => {
+    if (!p.email) return;
+    BORANG_PENSYARAH.forEach(b => {
+      if (Math.random() > 0.3) demoLec.push({
+        'Nama Pensyarah': p.pensyarah,
+        'Email Pensyarah': p.email,
+        'Nama Pelajar': p.nama,
+        'No Pend': p.noPend,
+        'Jenis Borang': b,
+        'Status Hantar': 'Sudah Dihantar ke Drive',
+      });
+    });
+  });
+
+  const demoSup = [];
+  SENARAI_PELAJAR.forEach((p, i) => {
+    BORANG_PENYELIA.forEach(b => {
+      if (Math.random() > 0.4) demoSup.push({
+        'Nama Penyelia': 'PENYELIA SYARIKAT ' + (i + 1),
+        'Syarikat': 'SYARIKAT DEMO SDN BHD ' + (i + 1),
+        'Nama Pelajar': p.nama,
+        'No Pend': p.noPend,
+        'Jenis Borang': b,
+        'Status Hantar': 'Sudah Dihantar ke Drive UPLI',
+      });
+    });
+  });
+
+  return { pelajar: demoP, pensyarah: demoLec, penyelia: demoSup };
+}
+
+// ============================================================
+// === PROCESS DATA PELAJAR
+// ============================================================
+function processPelajarData(rows) {
+  const mgu = mingguSekarang();
+  const map = {};
+
+  SENARAI_PELAJAR.forEach(p => {
+    map[p.noPend] = { ...p, docs: {} };
+    DOCS.forEach(d => { map[p.noPend].docs[d.key] = null; });
+  });
+
+  rows.forEach(r => {
+    const id  = (r['No Pend'] || '').trim();
+    const doc = (r['Jenis Dokumen'] || '').trim();
+    const sts = (r['Status'] || '').trim();
+    if (!map[id]) return;
+    const found = DOCS.find(d => d.label === doc || doc.includes(d.key));
+    if (found && sts.toLowerCase().includes('sudah')) {
+      map[id].docs[found.key] = 'hantar';
+    }
+  });
+
+  return SENARAI_PELAJAR.map(p => {
+    const entry = map[p.noPend];
+    const docStatus = {};
+    let tertunggak = 0, belumMasa = 0, lengkap = 0;
+    DOCS.forEach(d => {
+      if (entry.docs[d.key] === 'hantar') {
+        docStatus[d.key] = 'ok'; lengkap++;
+      } else if (d.minggu <= mgu) {
+        docStatus[d.key] = 'late'; tertunggak++;
+      } else {
+        docStatus[d.key] = 'wait'; belumMasa++;
+      }
+    });
+    const overall = tertunggak > 0 ? 'alert' : (belumMasa === 0 ? 'ok' : 'partial');
+    return { ...p, docStatus, tertunggak, belumMasa, lengkap, overall };
+  });
+}
+
+// ============================================================
+// === RENDER JADUAL PELAJAR
+// ============================================================
+function renderPelajarTable(data) {
+  let rows = data;
+  if (gFilterPelajar === 'tertunggak') rows = data.filter(r => r.tertunggak > 0);
+  if (gFilterPelajar === 'lengkap')    rows = data.filter(r => r.tertunggak === 0 && r.belumMasa === 0);
+
+  const tbody = document.getElementById('tbody-pelajar');
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="11"><div class="loading-msg">Tiada rekod ditemui.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((p, i) => {
+    const stBadge = {
+      ok:    '<span class="st st-ok">✅ Lengkap</span>',
+      alert: `<span class="st st-late">⚠️ ${p.tertunggak} Tertunggak</span>`,
+      partial:`<span class="st st-partial">📅 Sedang Berjalan</span>`,
+    }[p.overall] || '';
+
+    const docCells = DOCS.map(d => {
+      const s = p.docStatus[d.key];
+      if (s === 'ok')   return '<td><span class="st st-ok">✅</span></td>';
+      if (s === 'late') return '<td><span class="st st-late">⚠️</span></td>';
+      return '<td><span class="st st-wait">—</span></td>';
+    }).join('');
+
+    const rowCls = p.overall === 'alert' ? 'row-alert' : (p.overall === 'ok' ? 'row-ok' : '');
+    const namaCls = p.nama.startsWith('[') ? 'td-muted' : 'td-bold';
+    return `<tr class="${rowCls}">
+      <td class="td-num">${p.bil}</td>
+      <td class="td-muted">${p.noPend}</td>
+      <td class="${namaCls}">${p.nama}</td>
+      ${docCells}
+      <td>${stBadge}</td>
+    </tr>`;
+  }).join('');
+
+  // Update summary card
+  const total = data.length;
+  const lengkap = data.filter(r => r.overall === 'ok').length;
+  const ada = data.filter(r => r.overall === 'alert').length;
+  const pct = Math.round(lengkap / total * 100);
+  document.getElementById('c1-num').textContent = total;
+  document.getElementById('c1-bar').style.width = pct + '%';
+  document.getElementById('c1-sub').innerHTML =
+    `<span class="badge-green">✅ ${lengkap} Lengkap</span>` +
+    `<span class="badge-red">⚠️ ${ada} Ada Tertunggak</span>`;
+}
+
+// ============================================================
+// === PROCESS & RENDER JADUAL PENSYARAH
+// ============================================================
+function processPensyarahData(rows) {
+  const map = {};
+  SENARAI_PELAJAR.forEach(p => {
+    if (!p.pensyarah || p.pensyarah.startsWith('[')) return;
+    const key = p.pensyarah;
+    if (!map[key]) map[key] = { nama: p.pensyarah, email: p.email, pelajar: [], borang: {} };
+    map[key].pelajar.push({ nama: p.nama, noPend: p.noPend });
+    BORANG_PENSYARAH.forEach(b => { map[key].borang[b] = map[key].borang[b] || {}; });
+  });
+
+  rows.forEach(r => {
+    const pensyarah = (r['Nama Pensyarah'] || '').trim();
+    const borang    = (r['Jenis Borang']   || '').trim();
+    const noPend    = (r['No Pend']        || '').trim();
+    const status    = (r['Status Hantar']  || '').trim();
+    if (map[pensyarah] && status.toLowerCase().includes('sudah')) {
+      if (!map[pensyarah].borang[borang]) map[pensyarah].borang[borang] = {};
+      map[pensyarah].borang[borang][noPend] = true;
+    }
+  });
+
+  return Object.values(map).map(p => {
+    let hantar = 0, total = 0;
+    p.pelajar.forEach(pl => {
+      BORANG_PENSYARAH.forEach(b => {
+        total++;
+        if (p.borang[b] && p.borang[b][pl.noPend]) hantar++;
+      });
+    });
+    return { ...p, hantar, total, pct: total ? Math.round(hantar/total*100) : 0 };
+  });
+}
+
+function renderPensyarahTable(data) {
+  let rows = data;
+  if (gFilterPensyarah === 'belum')   rows = data.filter(r => r.pct < 100);
+  if (gFilterPensyarah === 'lengkap') rows = data.filter(r => r.pct === 100);
+
+  const tbody = document.getElementById('tbody-pensyarah');
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="loading-msg">Tiada rekod ditemui.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((p, i) => {
+    const pelajarStr = p.pelajar.map(pl => pl.nama).join(', ');
+    const noPendStr  = p.pelajar.map(pl => pl.noPend).join(', ');
+
+    const borangCells = p.pelajar.slice(0, 1).map(pl =>
+      BORANG_PENSYARAH.map(b =>
+        (p.borang[b] && p.borang[b][pl.noPend])
+          ? '<td><span class="st st-ok">✅ Diterima</span></td>'
+          : '<td><span class="st st-late">⚠️ Belum</span></td>'
+      ).join('')
+    ).join('');
+
+    const stBadge = p.pct === 100
+      ? '<span class="st st-ok">✅ Lengkap</span>'
+      : `<span class="st st-late">⚠️ ${p.hantar}/${p.total}</span>`;
+    const rowCls = p.pct < 100 ? 'row-alert' : 'row-ok';
+    const emailLink = p.email
+      ? `<a href="mailto:${p.email}?subject=Peringatan%20Borang%20Penilaian%20LI%20JKE%20POLISAS">${p.email}</a>`
+      : '—';
+
+    return `<tr class="${rowCls}">
+      <td class="td-num">${i+1}</td>
+      <td class="td-bold">${p.nama}</td>
+      <td class="td-muted" style="font-size:11px">${pelajarStr}</td>
+      <td class="td-muted" style="font-size:11px">${noPendStr}</td>
+      ${borangCells}
+      <td class="td-email">${emailLink}</td>
+      <td>${stBadge}</td>
+    </tr>`;
+  }).join('');
+
+  const lengkap = data.filter(r => r.pct === 100).length;
+  const belum   = data.filter(r => r.pct < 100).length;
+  const total   = data.length;
+  const pct     = total ? Math.round(lengkap/total*100) : 0;
+  document.getElementById('c2-num').textContent = total;
+  document.getElementById('c2-bar').style.width = pct + '%';
+  document.getElementById('c2-sub').innerHTML =
+    `<span class="badge-green">✅ ${lengkap} Lengkap</span>` +
+    `<span class="badge-red">⚠️ ${belum} Belum Lengkap</span>`;
+}
+
+// ============================================================
+// === PROCESS & RENDER JADUAL PENYELIA
+// ============================================================
+function processPenyeliaData(rows) {
+  const map = {};
+  SENARAI_PELAJAR.forEach(p => {
+    map[p.noPend] = { nama: p.nama, noPend: p.noPend, penyelia: '—', syarikat: '—', borang: {} };
+    BORANG_PENYELIA.forEach(b => { map[p.noPend].borang[b] = false; });
+  });
+
+  rows.forEach(r => {
+    const noPend  = (r['No Pend']        || '').trim();
+    const penyelia= (r['Nama Penyelia']  || '').trim();
+    const syarikat= (r['Syarikat']       || '').trim();
+    const borang  = (r['Jenis Borang']   || '').trim();
+    const status  = (r['Status Hantar']  || '').trim();
+    if (!map[noPend]) return;
+    if (penyelia) map[noPend].penyelia = penyelia;
+    if (syarikat) map[noPend].syarikat = syarikat;
+    if (borang && status.toLowerCase().includes('sudah')) map[noPend].borang[borang] = true;
+  });
+
+  return SENARAI_PELAJAR.map(p => {
+    const e = map[p.noPend];
+    const hantar = BORANG_PENYELIA.filter(b => e.borang[b]).length;
+    const lengkap = hantar === BORANG_PENYELIA.length;
+    return { ...e, hantar, lengkap };
+  });
+}
+
+function renderPenyeliaTable(data) {
+  let rows = data;
+  if (gFilterPenyelia === 'belum')  rows = data.filter(r => !r.lengkap);
+  if (gFilterPenyelia === 'hantar') rows = data.filter(r => r.lengkap);
+
+  const tbody = document.getElementById('tbody-penyelia');
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="loading-msg">Tiada rekod ditemui.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((p, i) => {
+    const borangCells = BORANG_PENYELIA.map(b =>
+      p.borang[b]
+        ? '<td><span class="st st-ok">✅ Diterima</span></td>'
+        : '<td><span class="st st-late">⚠️ Belum</span></td>'
+    ).join('');
+
+    const stBadge = p.lengkap
+      ? '<span class="st st-ok">✅ Lengkap</span>'
+      : `<span class="st st-late">⚠️ ${p.hantar}/${BORANG_PENYELIA.length}</span>`;
+    const rowCls  = p.lengkap ? 'row-ok' : 'row-alert';
+    const namaCls = p.nama.startsWith('[') ? 'td-muted' : 'td-bold';
+
+    return `<tr class="${rowCls}">
+      <td class="td-num">${i+1}</td>
+      <td class="${namaCls}">${p.nama}</td>
+      <td class="td-muted">${p.noPend}</td>
+      <td>${p.penyelia}</td>
+      <td class="td-muted">${p.syarikat}</td>
+      ${borangCells}
+      <td>${stBadge}</td>
+    </tr>`;
+  }).join('');
+
+  const lengkap = data.filter(r => r.lengkap).length;
+  const belum   = data.length - lengkap;
+  const pct     = Math.round(lengkap / data.length * 100);
+  document.getElementById('c3-num').textContent = data.length;
+  document.getElementById('c3-bar').style.width = pct + '%';
+  document.getElementById('c3-sub').innerHTML =
+    `<span class="badge-green">✅ ${lengkap} Lengkap</span>` +
+    `<span class="badge-red">⚠️ ${belum} Belum Lengkap</span>`;
+}
+
+// ============================================================
+// === LOAD DATA (fetch CSV atau pakai demo)
+// ============================================================
+async function fetchCSV(url) {
+  try {
+    const resp = await fetch(url + '&cachebust=' + Date.now(), { cache: 'no-store' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    return parseCSV(await resp.text());
+  } catch (e) {
+    console.warn('CSV fetch gagal:', url, e);
+    return [];
+  }
+}
+
+async function loadAllData() {
+  const btn = document.getElementById('btn-refresh');
+  btn.disabled = true;
+  btn.textContent = '⏳ Memuatkan...';
+
+  let pelajarRows, pensyarahRows, penyeliaRows;
+
+  if (USE_DEMO) {
+    const demo = genDemoData();
+    pelajarRows   = demo.pelajar;
+    pensyarahRows = demo.pensyarah;
+    penyeliaRows  = demo.penyelia;
+  } else {
+    [pelajarRows, pensyarahRows, penyeliaRows] = await Promise.all([
+      fetchCSV(CONFIG.CSV_PELAJAR),
+      fetchCSV(CONFIG.CSV_PENSYARAH),
+      fetchCSV(CONFIG.CSV_PENYELIA),
+    ]);
+    document.getElementById('config-notice').style.display = 'none';
+  }
+
+  gPelajarRows   = processPelajarData(pelajarRows);
+  gPensyarahRows = processPensyarahData(pensyarahRows);
+  gPenyeliaRows  = processPenyeliaData(penyeliaRows);
+
+  renderPelajarTable(gPelajarRows);
+  renderPensyarahTable(gPensyarahRows);
+  renderPenyeliaTable(gPenyeliaRows);
+
+  const now = new Date().toLocaleString('ms-MY');
+  document.getElementById('last-refresh').textContent = 'Dikemaskini: ' + now;
+  localStorage.setItem('li_last_refresh', now);
+
+  btn.disabled = false;
+  btn.textContent = '🔄 Muat Semula';
+}
+
+// ============================================================
+// === FILTER HANDLERS
+// ============================================================
+function setActiveFilter(container, btn) {
+  container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function filterPelajar(mode, btn) {
+  gFilterPelajar = mode;
+  setActiveFilter(document.getElementById('panel-pelajar'), btn);
+  renderPelajarTable(gPelajarRows);
+}
+function filterPensyarah(mode, btn) {
+  gFilterPensyarah = mode;
+  setActiveFilter(document.getElementById('panel-pensyarah'), btn);
+  renderPensyarahTable(gPensyarahRows);
+}
+function filterPenyelia(mode, btn) {
+  gFilterPenyelia = mode;
+  setActiveFilter(document.getElementById('panel-penyelia'), btn);
+  renderPenyeliaTable(gPenyeliaRows);
+}
+
+// ============================================================
+// === TAB SWITCHING
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ============================================================
+// === INIT
+// ============================================================
+function init() {
+  // Header date
+  document.getElementById('hdr-date').textContent = formatTarikh(new Date());
+
+  // Minggu semasa
+  const mgu = mingguSekarang();
+  document.getElementById('minggu-sekarang').textContent =
+    mgu <= 0 ? 'LI Belum Bermula' : (mgu > 16 ? 'LI Selesai' : 'Minggu ' + mgu + ' / 16');
+
+  // Form links
+  ['pelajar','pensyarah','penyelia'].forEach(k => {
+    const url = FORMS['FORM_' + k.toUpperCase()];
+    const el  = document.getElementById('link-form-' + k);
+    if (url) { el.href = url; el.classList.remove('disabled-link'); }
+  });
+
+  // Config notice
+  if (!USE_DEMO) document.getElementById('config-notice').style.display = 'none';
+
+  loadAllData();
+
+  // Auto-refresh setiap 5 minit
+  setInterval(loadAllData, 5 * 60 * 1000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
